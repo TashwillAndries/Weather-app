@@ -24,15 +24,19 @@ def get_weather():
         params1 = {'appid': weather_key, 'q': city, 'units': 'Metric'}
         response = requests.get(url, params=params1)
         weather = response.json()
-        description_label.configure(text='Description: ' + str(weather['weather'][0]['main']))
-        temp_label.configure(text='Temperature: ' + str(weather['main']['temp']))
-        humidity_label.configure(text='Humidity: ' + str(weather['main']['humidity']))
-        wind_speed.configure(text='Wind Speed: ' + str(weather['wind']['speed']))
+        description_label.config(text='Description: ' + str(weather['weather'][0]['main']))
+        temp_label.config(text='Temperature: ' + str(weather['main']['temp']))
+        humidity_label.config(text='Humidity: ' + str(weather['main']['humidity']))
+        wind_speed.config(text='Wind Speed: ' + str(weather['wind']['speed']))
     except requests.exceptions.ConnectionError:
         messagebox.showerror("Error", "NO internet Connection")
 
     except ValueError:
         messagebox.showerror("Error", "City cannot be found")
+
+    except KeyError:
+        messagebox.showerror("Error", "Incorrect spelling of city")
+
 
 # Clear function
 def clear():
@@ -42,9 +46,11 @@ def clear():
     humidity_label.config(text="")
     wind_speed.config(text="")
 
+
 # exit function
 def kill():
     app.destroy()
+
 
 # Layout for the window
 city_name = Entry(app, width=50)
